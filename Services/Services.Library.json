@@ -1,0 +1,207 @@
+{
+  "$schema": "https://schema.argutec.eu/sf/service.schema.json",
+  "settings": {
+    "outputPath": "",
+    "profile": "",
+    "customProfilePath": "",
+    "controllerPath": "../TestProject/Controllers/LibraryController.cs"
+  },
+  "definitions": {
+    "Author": {
+      "$id": "#author",
+      "properties": {
+        "AuthorId": { "type": "int" },
+        "FirstName": { "type": "string" },
+        "LastName": { "type": "string" },
+        "Books": { "customType": "List<Book>" }
+      }
+    },
+    "AuthorDTO": {
+      "$id": "#authorDTO",
+      "properties": {
+        "AuthorId": { "type": "int" },
+        "FirstName": { "type": "string" },
+        "LastName": { "type": "string" },
+        "FullName": { "type": "string" },
+        "Books": { "customType": "List<BookDTO>" }
+      }
+    },
+    "Book": {
+      "$id": "#book",
+      "properties": {
+        "BookId": { "type": "int" },
+        "Title": { "type": "string" },
+        "AuthorId": { "type": "int" },
+        "Author": { "type": "Author" },
+        "Categories": { "customType": "List<Category>" },
+        "ReleaseDate": { "type": "int" }
+      }
+    },
+    "BookDTO": {
+      "$id": "#bookDTO",
+      "properties": {
+        "BookId": { "type": "int" },
+        "Title": { "type": "string" },
+        "AuthorId": { "type": "int" },
+        "AuthorFullName": { "type": "string" },
+        "Categories": { "customType": "List<Category>" },
+        "CategoryId": { "type": "int[]" },
+        "CategoryNames": { "type": "string" },
+        "ReleaseDate": { "type": "int" }
+      }
+    },
+    "Category": {
+      "$id": "#Category",
+      "properties": {
+        "CategoryId": { "type": "int" },
+        "CategoryName": { "type": "string" },
+        "Books": {
+          "customType": "ICollection<Book>",
+          "jsonIngore": true
+        }
+      }
+    },
+    "DataRequest": {
+      "$id": "#DataRequest",
+      "properties": {
+        "CurrentPage": { "type": "int" },
+        "SearchPhrase": { "type": "string" }
+      }
+    },
+    "DataResponse": {
+      "$id": "#DataResponse",
+      "properties": {
+        "PageCount": { "type": "int" },
+        "Books": { "customType": "List<BookDTO>" },
+        "Categories": { "customType": "List<Category>" },
+        "Authors": { "customType": "List<AuthorDTO>" }
+      }
+    }
+  },
+  "commands": {
+    "GetBook": {
+      "controllerMethod": {
+        "method": "HttpGet",
+        "urlMethod": "{aID}"
+      },
+      "request": {
+        "properties": {
+          "Id": {
+            "type": "int"
+          }
+        }
+      },
+      "response": {
+        "properties": {},
+        "autoMapper": [ { "$ref": "#bookDTO" } ]
+      }
+    },
+    "ListBooks": {
+      "controllerMethod": {
+        "method": "HttpGet",
+        "urlMethod": "list-books/{aCurrentPage}/{aSearchPhrase?}"
+      },
+      "request": {
+        "properties": {
+          "CurrentPage": { "type": "int" },
+          "SearchPhrase": { "type": "string" }
+        }
+      },
+      "response": {
+        "properties": {},
+        "autoMapper": [ { "$ref": "#DataResponse" } ]
+      }
+    },
+    "ListAuthors": {
+      "controllerMethod": {
+        "method": "HttpGet",
+        "urlMethod": "list-authors"
+      },
+      "request": {
+        "properties": {
+        }
+      },
+      "response": {
+        "properties": {
+          "Authors": { "customType": "List<AuthorDTO>" }
+        }
+      }
+    },
+    "ListCategories": {
+      "controllerMethod": {
+        "method": "HttpGet",
+        "urlMethod": "list-categories"
+      },
+      "request": {
+        "properties": {
+        }
+      },
+      "response": {
+        "properties": {
+          "Categories": { "customType": "List<Category>" }
+        }
+      }
+    },
+    "UpsertBook": {
+      "controllerMethod": {
+        "method": "HttpPost",
+        "urlMethod": "book"
+      },
+      "request": {
+        "properties": {
+          "Record": {
+            "type": "Object",
+            "objectRef": { "$ref": "#bookDTO" },
+            "controllerBinding": "FromBody"
+          }
+        }
+      },
+      "response": {
+        "properties": {
+          "Success": { "type": "bool" },
+          "Message": { "type": "string" }
+        }
+      }
+    },
+    "InsertAuthor": {
+      "controllerMethod": {
+        "method": "HttpPost",
+        "urlMethod": "author"
+      },
+      "request": {
+        "properties": {
+          "Record": {
+            "type": "Object",
+            "objectRef": { "$ref": "#authorDTO" },
+            "controllerBinding": "FromBody"
+          }
+        }
+      },
+      "response": {
+        "properties": {
+          "Success": { "type": "bool" },
+          "Message": { "type": "string" }
+        }
+      }
+    },
+    "DeleteBook": {
+      "controllerMethod": {
+        "method": "HttpDelete",
+        "urlMethod": "{aID}"
+      },
+      "request": {
+        "properties": {
+          "Id": {
+            "type": "int"
+          }
+        }
+      },
+      "response": {
+        "properties": {
+          "Success": { "type": "bool" },
+          "Message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

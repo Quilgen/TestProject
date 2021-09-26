@@ -1,0 +1,37 @@
+<h1 id="tableLabel">Book Details</h1>
+
+<p *ngIf="!book"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="book">
+  <tr>
+    <th>Title</th>
+    <td><input type="text" class="form-control" [(ngModel)]="book.title" /></td>
+  </tr>
+  <tr>
+    <th>Author</th>
+    <td>
+      <select [(ngModel)]="book.authorId">
+        <option [ngValue]="0" disabled hidden>Select Author</option>
+        <option *ngFor="let author of mAuthors" [(ngValue)]="author.authorId">{{author.fullName}}</option>
+      </select>
+    </td>    
+  </tr>
+  <tr>
+    <th>Category</th>
+    <td>
+      <ng-container *ngFor="let i of mCategories;">
+        <label for="flexCheck" class="form-check-label">{{i.categoryName}}</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" class="form-check-input" id="flexCheck" [(ngModel)]="i.selected" [(checked)]="i.selected" />
+        &nbsp;&nbsp;
+      </ng-container>
+    </td>
+  </tr>
+  <tr>
+    <th>Release Date</th>
+    <td><input type="text" class="form-control" [(ngModel)]="book.releaseDate" /></td>
+  </tr>
+  <tr>
+    <td colspan="2"><button class="btn btn-primary" (click)="edit()">Save</button></td>
+  </tr>
+</table>

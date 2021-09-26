@@ -1,0 +1,61 @@
+<h1 id="tableLabel">Library</h1>
+
+<td><a class="nav-link text-dark btn btn-success" [routerLink]="['/edit']">Add New Book</a></td>
+<td><a class="nav-link text-dark btn btn-warning" [routerLink]="['/author']">Add New Author</a></td>
+
+<p *ngIf="!books"><em>Loading...</em></p>
+
+<div *ngIf="books" class="container">
+  <div class="card m-5 p-3">
+    <div class="card-body">
+      <label>
+        Search:
+        <input class="form-control m-3" type="search" name="search" id="search" [(ngModel)]="mDataRequest.searchPhrase" />
+      </label>
+      <button class="btn btn-primary m-3" type="submit" (click)="DataBind()">Search</button>
+      <br />
+      <table class='table table-bordered table-striped table-hover' aria-labelledby="tableLabel">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Release Date</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books">
+            <td>{{ book.title }}</td>
+            <td>{{ book.authorFullName }}</td>
+            <td>{{ book.categoryNames }}</td>
+            <td>{{ book.releaseDate }}</td>
+            <td><a class="nav-link text-dark btn btn-primary" [routerLink]="['/edit', book.bookId]">Details</a></td>
+            <td><button type=button class="btn btn-danger" (click)="delete(book.bookId)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-warning" (click)="goToPage(0)">
+        <=
+      </button>
+      <button class="btn btn-warning" [disabled]="mDataRequest.currentPage == 0" (click)="goToPage(mDataRequest.currentPage - 1)">
+        <
+      </button>
+      <ng-container *ngFor="let i of pageButtons();">
+        <button class="btn btn-warning" *ngIf="mDataRequest.currentPage != i" (click)="goToPage(i)">
+          {{i + 1}}
+        </button>
+        <button class="btn btn-success" disabled *ngIf="mDataRequest.currentPage == i" (click)="goToPage(i)">
+          {{i + 1}}
+        </button>
+      </ng-container>
+      <button class="btn btn-warning" [disabled]="mDataRequest.currentPage == pageCount - 1" (click)="goToPage(mDataRequest.currentPage + 1)">
+        >
+      </button>
+      <button class="btn btn-warning" (click)="goToPage(pageCount - 1)">
+        =>
+      </button>
+    </div>
+  </div>
+</div>

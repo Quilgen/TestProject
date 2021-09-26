@@ -1,0 +1,19 @@
+<h1 id="tableLabel">Author Details</h1>
+
+<p *ngIf="!author"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="author">
+  <tr>
+    <th>First Name</th>
+    <td><input type="text" class="form-control" [(ngModel)]="author.firstName" /></td>
+  </tr>
+  <tr>
+    <th>Last Name</th>
+    <td>
+      <input type="text" class="form-control" [(ngModel)]="author.lastName" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><button class="btn btn-primary" (click)="edit()">Save</button></td>
+  </tr>
+</table>

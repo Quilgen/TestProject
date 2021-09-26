@@ -1,0 +1,5 @@
+ {
+  "$schema": "https://schema.argutec.eu/sf/config.schema.json",
+  "outputPath": "../",
+  "profile": "MediatR"
+}
